@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # Import libraries
 import RPi.GPIO as GPIO
 import random
