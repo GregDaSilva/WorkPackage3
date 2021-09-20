@@ -195,8 +195,6 @@ def btn_increase_pressed(channel):
     GPIO.output(tuple(LED_value), binaryLEDs)
     pass
 
-def printState(channel):
-    print(GPIO.input(channel))
 
 # Guess button
 def btn_guess_pressed(channel):
