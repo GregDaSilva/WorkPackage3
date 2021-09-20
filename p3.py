@@ -122,7 +122,7 @@ def fetch_scores():
     scores_array = []
 
     if score_count > 0:
-        rawData = eeprom.read_block(1,score_count*4)
+        raw_data = eeprom.read_block(1,score_count*4)
 
         # Get the scores
         for i in range(0, score_count*4, 4):
@@ -130,9 +130,9 @@ def fetch_scores():
 
             # convert the codes back to ascii
             for j in range(3):
-                playerName += chr(rawData[i+j])
+                playerName += chr(raw_data[i+j])
 
-            scores_array.append([playerName, rawData[i + 3]])
+            scores_array.append([playerName, raw_data[i + 3]])
 
 
     # return back the results
