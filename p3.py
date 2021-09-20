@@ -56,8 +56,7 @@ def menu():
         os.system('clear')
         print("Starting a new round!")
         print("Use the buttons on the Pi to make and submit your guess!")
-        print("Press and hold the guess button, for longer than 2 seconds and then release, to cancel your game")
-        print()
+        print("Press and hold the guess button to cancel your game")
         print("Guessed number : {}".format(guess_num))
         actual_value = generate_number()
         Num_Guesses = 0
@@ -162,8 +161,8 @@ def save_scores(name, new_score):
         for i, score in enumerate(ss):
             data_to_write = []
             # get the string
-            for letter in score[0]:
-                data_to_write.append(ord(letter))
+            for k in score[0]:
+                data_to_write.append(ord(k))
             data_to_write.append(score[1])
             eeprom.write_block(i+1, data_to_write)
     pass
@@ -194,8 +193,8 @@ def btn_increase_pressed(channel):
     # You can choose to have a global variable store the user's current guess, 
     # or just pull the value off the LEDs when a user makes a guess
     
-    binaryLEDs = format(guess_num, '#05b')[2:]
-    binaryLEDs = (bool(int(binaryLEDs[2])),bool(int(binaryLEDs[1])),bool(int(binaryLEDs[0])))
+    binLEDs = format(guess_num, '#05b')[2:]
+    binLEDs = (bool(int(binLEDs[2])),bool(int(binLEDs[1])),bool(int(binLEDs[0])))
     GPIO.output(tuple(LED_value), binaryLEDs)
     pass
 
