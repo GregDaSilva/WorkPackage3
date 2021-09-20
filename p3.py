@@ -190,6 +190,7 @@ def btn_increase_pressed(channel):
     # or just pull the value off the LEDs when a user makes a guess
     
     binLEDs = format(guess_num, '#05b')[2:]
+
     binLEDs = (bool(int(binLEDs[2])),bool(int(binLEDs[1])),bool(int(binLEDs[0])))
     GPIO.output(tuple(LED_value), binaryLEDs)
     pass
@@ -213,7 +214,7 @@ def btn_guess_pressed(channel):
     time_pressed = time.time()
 
     while GPIO.input(channel) == GPIO.LOW:
-        time.sleep(0.0001)
+        time.sleep(0.001)
     
     time_released = time.time()
 
@@ -234,7 +235,7 @@ def btn_guess_pressed(channel):
         print()
         print("Well done CHAMP! You win! {}".format(guess_num))
 
-        name = input('Please enter your name below:\n')[0:3]	# - tell the user and prompt them for a name
+        name = input('Please enter your name :')[0:3]	# - tell the user and prompt them for a name
 
         save_scores(name, Num_Guesses)	# - add the new score
         
