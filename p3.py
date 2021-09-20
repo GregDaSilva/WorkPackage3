@@ -109,15 +109,14 @@ def setup():
     LED_PWM = GPIO.PWM(32, 1000) 
 
     # Setup debouncing and callbacks
-    GPIO.add_event_detect(btn_submit, GPIO.FALLING, callback=btn_guess_pressed, bouncetime=200)
-    GPIO.add_event_detect(btn_increase, GPIO.FALLING, callback=btn_increase_pressed, bouncetime=200)
+    GPIO.add_event_detect(btn_submit, GPIO.FALLING, callback=btn_guess_pressed, bouncetime=100)
+    GPIO.add_event_detect(btn_increase, GPIO.FALLING, callback=btn_increase_pressed, bouncetime=100)
 
     pass
 
 # Load high scores
 def fetch_scores():
     global eeprom
-    ## DONE
     # get however many scores there are
     score_count = eeprom.read_byte(0)
     scores_array = []
@@ -142,7 +141,6 @@ def fetch_scores():
 # Save high scores
 def save_scores(name, new_score):
     global eeprom
-    ## DONE
     # fetch scores
     score_count, ss = fetch_scores()
 
@@ -169,12 +167,10 @@ def save_scores(name, new_score):
 
 # Generate guess number
 def generate_number():
-    ## DONE
     return random.randint(0, pow(2, 3)-1)
 
 # Increase button pressed
 def btn_increase_pressed(channel):
-    ## DONE
     global guess_num
     global option
 
@@ -184,12 +180,12 @@ def btn_increase_pressed(channel):
     if guess_num == 7:
         guess_num = 0
     else:
-        guess_num += 1
+        guess_num += 1	# Increase the value shown on the LEDs
 
     #clearLines()
     print("Guessed number : {}".format(guess_num))
 
-    # Increase the value shown on the LEDs
+    
     # You can choose to have a global variable store the user's current guess, 
     # or just pull the value off the LEDs when a user makes a guess
     
@@ -234,13 +230,13 @@ def btn_guess_pressed(channel):
     # Compare the actual value with the user value displayed on the LEDs
     if guess_num == actual_value:
         ## EXACT GUESS
-        GPIO.output(tuple([LED_accuracy]) + tuple(LED_value), False)
+        GPIO.output(tuple([LED_accuracy]) + tuple(LED_value), False)	# - Disable LEDs and Buzzer
         print()
         print("Well done CHAMP! You win! {}".format(guess_num))
 
-        name = input('Please enter your name below:\n')[0:3]
+        name = input('Please enter your name below:\n')[0:3]	# - tell the user and prompt them for a name
 
-        save_scores(name, Num_Guesses)
+        save_scores(name, Num_Guesses)	# - add the new score
         
         end_of_game = True
     else:
@@ -260,10 +256,10 @@ def btn_guess_pressed(channel):
 
 
     # if it's an exact guess:
-    # - Disable LEDs and Buzzer
-    # - tell the user and prompt them for a name
+    
+    
     # - fetch all the scores
-    # - add the new score
+    
     # - sort the scores
     # - Store the scores back to the EEPROM, being sure to update the score count
     pass
@@ -271,7 +267,6 @@ def btn_guess_pressed(channel):
 
 # LED Brightness
 def accuracy_leds():
-	## DONE
 	global guess_num
 	global actual_value
 	global LED_PWM
@@ -284,30 +279,28 @@ def accuracy_leds():
 	else:
 		LED_PWM.start(((8-guess_num)/(8-actual_value))*100)
 
-
 	pass
 
 
 # Sound Buzzer
 def trigger_buzzer():
-    ## FIX SOUND
     global Buzz_PWM
     global guess_num
     global actual_value
 
     # The buzzer operates differently from the LED
     # While we want the brightness of the LED to change(duty cycle), we want the frequency of the buzzer to change
-    # The buzzer duty cycle should be left at 50%
+    
 
     if abs(guess_num-actual_value) == 3:
-        Buzz_PWM.start(50)
+        Buzz_PWM.start(50)		# The buzzer duty cycle should be left at 50%
         Buzz_PWM.ChangeFrequency(1)	# If the user is off by an absolute value of 3, the buzzer should sound once every second
 
     elif abs(guess_num-actual_value) == 2:
-        Buzz_PWM.start(50)
+        Buzz_PWM.start(50)		# The buzzer duty cycle should be left at 50%
         Buzz_PWM.ChangeFrequency(2)	# If the user is off by an absolute value of 2, the buzzer should sound twice every second
     elif abs(guess_num-actual_value) == 1:
-        Buzz_PWM.start(50)
+        Buzz_PWM.start(50)		# The buzzer duty cycle should be left at 50%
         Buzz_PWM.ChangeFrequency(4)	# If the user is off by an absolute value of 1, the buzzer should sound 4 times a second
     else:
         Buzz_PWM.stop()
